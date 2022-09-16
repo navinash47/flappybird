@@ -35,6 +35,16 @@ public class Player : MonoBehaviour
         direction.y += gravity * Time.deltaTime;
         transform.position += direction * Time.deltaTime;
     }
+    private void OnEnable()
+    {
+        
+        Vector3 pos = transform.position;
+        
+        pos.y = 0f;
+        
+        transform.position = pos;
+        direction = Vector3.zero;
+    }
     private void AnimateSprite()
     {
         spriteIndex++;
@@ -43,5 +53,19 @@ public class Player : MonoBehaviour
             spriteIndex = 0;
         }
         spriteRenderer.sprite = sprites[spriteIndex];
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
+        if (collision.CompareTag("Obstacle"))
+        {
+            
+            FindObjectOfType<GameManager>().GameOver();
+        }
+        if (collision.gameObject.CompareTag("Scoring"))
+        {
+            FindObjectOfType<GameManager>().IncreaseScore();
+
+        }
     }
 }
